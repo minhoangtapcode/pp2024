@@ -1,99 +1,88 @@
-students=[]
-courses=[]
-#input number of students
-def list_number_students():
-    x = int(input("Type the number of students in the class: "))
-    return x
-#input student information
-def information_students():
-    name = input("Type student name: ")
-    student_id = input("Type student ID: ")
-    dob = input("Date of birth (DD-MM-YYYY): ")
-    return {'id': student_id, 'name': name,'dob': dob, 'marks': {}}
-#input number of courses
-def list_number_courses():
-    x = int(input("Type the number of courses: "))
-    return x
-#input course in4
-def courses_info():
-    courses_id = int(input("Course ID: "))
-    name = input("Course name: ")
-    return {'id': courses_id, 'name': name}
-#input mark for students
-def courses_and_marks(students, courses):
-    list_courses(courses)
-    courses_id = int(input("Course order ID to input marks: "))
+students = []
+courses = []
 
+#students
+def num_of_stus():
+    num_stus = int(input("Enter the number of students in the class: "))
+    return num_stus
+
+def stu_in4():
+    student_id = input("Enter student ID: ")
+    student_name = input("Enter student name: ")
+    student_dob = input("Enter student date of birth: ")
+    student = (student_id, student_name, student_dob)
+    students.append(student)
+
+#courses
+def num_of_courses():
+    num_courses = int(input("Enter the number of courses: "))
+    return num_courses
+
+def course_in4():
+    course_id = input("Enter course ID: ")
+    course_name = input("Enter course name: ")
+    course = {"id": course_id, "name": course_name, "marks": {}}
+    courses.append(course)
+
+#marks
+def stu_marks():
+    course_id = input("Enter course ID: ")
     for student in students:
-        mark = float(input(f"Enter {student['name']}'s mark for {courses[courses_id-1]['name']}: "))
-        student['marks'][courses_id] = mark
+        marks = float(input(f"Enter marks for student {student[1]} in course {course_id}: "))
+        for course in courses:
+            if course["id"] == course_id:
+                course["marks"][student[0]] = marks
 
-    print("Marks update")
-
-def list_courses(courses):
-    print("\nList of Courses: ")
-    i = 0
+#list
+def list_courses():
+    print("Courses:")
     for course in courses:
-        print(f"{i+1}...ID: {course['id']}, Name: {course['name']}")
-        i=i+1
+        print(f"ID: {course['id']}, Name: {course['name']}")
 
-def list_students(Students):
-    print("\nList of Students: ")
-    for student in Students:
-        print(f"ID: {student['id']}, Name: {student['name']}")
-#show marks
-def show_student_course_marks(students, courses):
-    list_students(students)
-    student_id = input("Student id to see marks: ")
+def list_stu():
+    print("Students:")
+    for student in students:
+        print(f"ID: {student[0]}, Name: {student[1]}, DoB: {student[2]}")
 
-    if not any(student['id'] == student_id for student in students):
-        print(f"Error Student Id: {student_id}")
-        return
-    
-    list_courses(courses)
-    course_id =int(input("Course id to see marks: "))
+#show
+def show_stu_marks():
+    course_id = input("Enter course ID: ")
+    for course in courses:
+        if course["id"] == course_id:
+            print(f"Marks for course {course['name']}:")
+            for student_id, marks in course["marks"].items():
+                for student in students:
+                    if student[0] == student_id:
+                        print(f"Student: {student[1]}, Marks: {marks}")
 
-    if not any(course_id in courses['marks'] for student in students):
-        print(f"Error Course ID: {course_id} and Student ID: {student_id}")
-        return
-
-    
-    print(f"\nMarks for Student ID: {student_id} in Course ID: {course_id}: {students[students.index({'id': student_id})]['marks'][course_id]} ")
-
-num_students = list_number_students()
+#main
+num_students = num_of_stus()
 for _ in range(num_students):
-    students.append(information_students())
+    stu_in4()
 
-num_courses = list_number_courses()
+num_courses = num_of_courses()
 for _ in range(num_courses):
-    courses.append(courses_info())
+    course_in4()
 
-#choosing
 while True:
-    print("\nStudent Mark Management System")
-    print("1. Select Course and Input Marks")
-    print("2. List Courses")
-    print("3. List Students")
-    print("4. Show Student Marks for a Course")
+    print("\nMenu:")
+    print("1. List courses")
+    print("2. List students")
+    print("3. Show student marks for a given course")
+    print("4. Add student marks for a course")
     print("5. Exit")
 
-    choice = input("Enter your choice (1/2/3/4/5): ")
+    choice = input("Enter your choice: ")
 
-    if choice == '1':
-        courses_and_marks(students, courses)
-
-    elif choice == '2':
-        list_courses(courses)
-
-    elif choice == '3':
-        list_students(students)
-
-    elif choice == '4':
-        show_student_course_marks(students, courses)
-
-    elif choice == '5':
-        print("Exiting the Student Mark Management System. Goodbye!")
+    if choice == "1":
+        list_courses()
+    elif choice == "2":
+        list_stu()
+    elif choice == "3":
+        show_stu_marks()
+    elif choice == "4":
+        stu_marks()
+    elif choice == "5":
         break
-
     else:
-        print("Invalid choice. Please enter 1, 2, 3, 4, or 5.")
+        print("Error. Please try again.")
