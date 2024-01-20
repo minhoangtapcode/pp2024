@@ -68,8 +68,8 @@ while True:
     print("\nMenu:")
     print("1. List courses")
     print("2. List students")
-    print("3. Show student marks for a given course")
-    print("4. Add student marks for a course")
+    print("3. Add student marks for a course")
+    print("4. Show student marks for a given course")
     print("5. Exit")
 
     choice = input("Enter your choice: ")
@@ -79,9 +79,9 @@ while True:
     elif choice == "2":
         list_stu()
     elif choice == "3":
-        show_stu_marks()
-    elif choice == "4":
         stu_marks()
+    elif choice == "4":
+        show_stu_marks()
     elif choice == "5":
         break
     else:
