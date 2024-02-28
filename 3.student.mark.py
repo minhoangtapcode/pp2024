@@ -66,7 +66,7 @@ class StudentMarkSystem:
         course_id = input("Enter course ID: ")
         for student in self.students:
             marks = float(input(f"Enter marks for student {student.student_name} in course {course_id}: "))
-            marks = math.floor(marks * 10) / 10  # Round down to 1 decimal place
+            marks = math.floor(marks * 10) / 10  
             for course in self.courses:
                 if course.course_id == course_id:
                     course.add_marks(student.student_id, marks)
@@ -96,7 +96,7 @@ class StudentMarkSystem:
             self.course_id = course_id
             self.course_name = course_name
             self.credits = credits
-            self.marks = {}  # Initialize marks as an empty dictionary
+            self.marks = {} 
 
         def add_marks(self, student_id, marks):
             self.marks[student_id] = marks
