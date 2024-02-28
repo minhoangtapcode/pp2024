@@ -1,7 +1,6 @@
+
 import math
-import numpy
-
-
+import numpy as np
 
 students = []
 courses = []
@@ -10,15 +9,31 @@ class Student:
         self.student_id = student_id
         self.student_name = student_name
         self.student_dob = student_dob
-
-class Course:
-    def __init__(self, course_id, course_name):
-        self.course_id = course_id
-        self.course_name = course_name
         self.marks = {}
 
+    def calculate_gpa(self):
+        total_credits = 0
+        weighted_sum = 0
+        for course_id, marks in self.marks.items():
+            for course in courses:
+                if course.course_id == course_id:
+                    total_credits += course.credits
+                    weighted_sum += course.credits * marks
+        if total_credits == 0:
+            return 0
+        else:
+            return weighted_sum / total_credits
+
+class Course:
+    def __init__(self, course_id, course_name, credits):
+        self.course_id = course_id
+        self.course_name = course_name
+        self.credits = credits
+
     def add_marks(self, student_id, marks):
-        self.marks[student_id] = marks
+        for student in students:
+            if student.student_id == student_id:
+                student.marks[self.course_id] = marks
 
 class StudentMarkSystem:
     def __init__(self):
@@ -43,36 +58,48 @@ class StudentMarkSystem:
     def course_in4(self):
         course_id = input("Enter course ID: ")
         course_name = input("Enter course name: ")
-        course = Course(course_id, course_name)
+        credits = int(input("Enter course credits: "))
+        course = Course(course_id, course_name, credits)
         self.courses.append(course)
 
     def stu_marks(self):
         course_id = input("Enter course ID: ")
         for student in self.students:
             marks = float(input(f"Enter marks for student {student.student_name} in course {course_id}: "))
+            marks = math.floor(marks * 10) / 10  # Round down to 1 decimal place
             for course in self.courses:
                 if course.course_id == course_id:
                     course.add_marks(student.student_id, marks)
 
+    def calculate_average_gpa(self, student_id):
+        for student in self.students:
+            if student.student_id == student_id:
+                return student.calculate_gpa()
+
+    def sort_students_by_gpa(self):
+        sorted_students = sorted(self.students, key=lambda student: student.calculate_gpa(), reverse=True)
+        return sorted_students
+
+
     def list_courses(self):
         print("Courses:")
         for course in self.courses:
-            print(f"ID: {course.course_id}, Name: {course.course_name}")
+            print(f"ID: {course.course_id}, Name: {course.course_name}, Credits: {course.credits}")
 
     def list_stu(self):
         print("Students:")
         for student in self.students:
             print(f"ID: {student.student_id}, Name: {student.student_name}, DoB: {student.student_dob}")
 
-    def show_stu_marks(self):
-        course_id = input("Enter course ID: ")
-        for course in self.courses:
-            if course.course_id == course_id:
-                print(f"Marks for course {course.course_name}:")
-                for student_id, marks in course.marks.items():
-                    for student in self.students:
-                        if student.student_id == student_id:
-                            print(f"Student: {student.student_name}, Marks: {marks}")
+    class Course:
+        def __init__(self, course_id, course_name, credits):
+            self.course_id = course_id
+            self.course_name = course_name
+            self.credits = credits
+            self.marks = {}  # Initialize marks as an empty dictionary
+
+        def add_marks(self, student_id, marks):
+            self.marks[student_id] = marks
 
     def run(self):
         num_students = self.num_of_stus()
